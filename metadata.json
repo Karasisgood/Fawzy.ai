@@ -1,0 +1,6 @@
+{
+  "name": "fawzy.ai",
+  "description": "A clean, modern AI assistant for smart conversations and image generation.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

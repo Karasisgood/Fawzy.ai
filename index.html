@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>fawzy.ai — AI Assistant & Website Builder</title>
+    <meta
+      name="description"
+      content="A clean, modern AI assistant for smart conversations and building live previewable websites."
+    />
+    <meta property="og:title" content="fawzy.ai — AI Assistant & Website Builder" />
+    <meta
+      property="og:description"
+      content="A clean, modern AI assistant for smart conversations and building live previewable websites."
+    />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem('fawzy_theme') || 'light';
+          var prefersDark =
+            window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+          var isDark = saved === 'dark' || (saved === 'system' && prefersDark);
+          if (isDark) document.documentElement.classList.add('dark');
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body class="bg-white text-slate-900 antialiased selection:bg-[#6892E8]/20 selection:text-[#122B8E] dark:bg-[#0B1120] dark:text-slate-100 dark:selection:text-[#93B4F5]">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

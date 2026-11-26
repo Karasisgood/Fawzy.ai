@@ -1,0 +1,154 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Private user account profile and AI workspace preferences owned by the authenticated user.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "description": "Firebase Auth UID of the account owner."
+        },
+        "username": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 32,
+          "description": "Display username chosen by the user."
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "minLength": 3,
+          "maxLength": 254,
+          "description": "User email address (private PII, owner-only access)."
+        },
+        "theme": {
+          "type": "string",
+          "enum": ["light", "dark", "system"],
+          "description": "Preferred UI color theme."
+        },
+        "responseStyle": {
+          "type": "string",
+          "enum": ["balanced", "concise", "detailed"],
+          "description": "Preferred AI assistant verbosity."
+        },
+        "customInstructions": {
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 500,
+          "description": "Optional custom instructions applied to chat and code generation."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when the profile was created."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when the profile was last updated."
+        }
+      },
+      "required": ["uid", "username", "email", "theme", "responseStyle", "customInstructions", "createdAt", "updatedAt"]
+    },
+    "ChatSession": {
+      "title": "ChatSession",
+      "description": "A saved chat conversation belonging to a specific user.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "description": "Unique chat session ID."
+        },
+        "ownerUid": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "description": "UID of the user who owns this chat session."
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100,
+          "description": "AI-generated short topic title for the conversation."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when the chat was created."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when the chat was last updated."
+        }
+      },
+      "required": ["id", "ownerUid", "title", "createdAt", "updatedAt"]
+    },
+    "ChatMessage": {
+      "title": "ChatMessage",
+      "description": "An individual message inside a user's chat session.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "description": "Unique message ID."
+        },
+        "ownerUid": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "description": "UID of the chat owner."
+        },
+        "role": {
+          "type": "string",
+          "enum": ["user", "model"],
+          "description": "Message author role."
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32000,
+          "description": "Markdown message body."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when the message was stored."
+        }
+      },
+      "required": ["id", "ownerUid", "role", "text", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": {
+        "$ref": "#/entities/UserProfile"
+      },
+      "description": "Private user profile and workspace settings, strictly readable and writable only by the owning user."
+    },
+    "/users/{userId}/chats/{chatId}": {
+      "schema": {
+        "$ref": "#/entities/ChatSession"
+      },
+      "description": "Chat sessions owned by the user, with AI-generated topic titles."
+    },
+    "/users/{userId}/chats/{chatId}/messages/{messageId}": {
+      "schema": {
+        "$ref": "#/entities/ChatMessage"
+      },
+      "description": "Ordered messages belonging to a user's chat session."
+    }
+  }
+}
